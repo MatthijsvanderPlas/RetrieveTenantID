@@ -1,6 +1,4 @@
-﻿using OneOf;
-
-namespace TenantID;
+﻿namespace TenantID;
 
 public interface IFetch
 {

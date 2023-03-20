@@ -1,4 +1,6 @@
-﻿namespace TenantID;
+﻿using TextCopy;
+
+namespace TenantID;
 
 internal abstract class Program
 {
@@ -13,14 +15,14 @@ internal abstract class Program
 
         if (result == "Domain not found")
         {
-            Console.WriteLine(result.ToString());
+            Console.WriteLine(result);
             Console.WriteLine("Hit any key to close...");
             Console.ReadKey();
         }
         else
         {
             Console.WriteLine($"TenantID: {result} (copied to clipboard)");
-            TextCopy.ClipboardService.SetText(result);
+            ClipboardService.SetText(result);
             Console.WriteLine("Hit any key to close...");
             Console.ReadKey();
         }
