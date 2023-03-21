@@ -13,18 +13,17 @@ internal abstract class Program
         var query = new Fetch(url);
         var result = query.FetchTenantID();
 
-        if (result == "Domain not found")
+        if (result.IsT1)
         {
-            Console.WriteLine(result);
+            Console.WriteLine(result.AsT1.Message);
             Console.WriteLine("Hit any key to close...");
             Console.ReadKey();
         }
-        else
-        {
-            Console.WriteLine($"TenantID: {result} (copied to clipboard)");
-            ClipboardService.SetText(result);
-            Console.WriteLine("Hit any key to close...");
-            Console.ReadKey();
-        }
+
+        if (!result.IsT0) return;
+        Console.WriteLine($"TenantID: {result.Value} (copied to clipboard)");
+        ClipboardService.SetText(result.AsT0.ToString());
+        Console.WriteLine("Hit any key to close...");
+        Console.ReadKey();
     }
 }

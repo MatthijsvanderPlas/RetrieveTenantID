@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using OneOf;
 
 namespace TenantID;
 
@@ -8,21 +9,22 @@ public class Fetch : IFetch
     {
         Url = url;
         HttpClient = new HttpClient();
-        TenantID = "";
     }
 
     public string Url { get; set; }
-    public string TenantID { get; set; }
+    public Guid TenantID { get; set; }
     public HttpClient HttpClient { get; set; }
 
-    public string FetchTenantID()
+    public OneOf<Guid, ErrorMessage> FetchTenantID()
     {
         var response = HttpClient.GetAsync(Url).Result;
+
         if (response.StatusCode == HttpStatusCode.NotFound)
-            return "Domain not found";
+            return new ErrorMessage("Domain not found!");
+        
         var xml = response.Content.ReadAsStringAsync().Result;
         var start = xml.IndexOf("entityID", StringComparison.Ordinal);
-        TenantID = xml.Substring(start + 34, 36);
+        TenantID = new Guid(xml.Substring(start + 34, 36));
         return TenantID;
     }
 }
